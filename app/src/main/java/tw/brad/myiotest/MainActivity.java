@@ -7,7 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
     private SharedPreferences sp;
@@ -50,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void test4(View view) {
         try {
-            FileOutputStream fout = openFileOutput("data.txt", MODE_APPEND);
-            fout.write("Hello,World\n".getBytes());
+            FileOutputStream fout = openFileOutput("data.txt", MODE_PRIVATE);
+            fout.write("Hello,World\n1234567\n7654321\nabcdefg\n".getBytes());
             fout.flush();
             fout.close();
             Toast.makeText(this, "Save2 OK", Toast.LENGTH_SHORT).show();
@@ -61,7 +64,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void test5(View view) {
+        try {
+            FileInputStream fin = openFileInput("data.txt");
+            InputStreamReader ir = new InputStreamReader(fin);
+            BufferedReader reader = new BufferedReader(ir);
 
+            String line = null;
+            while ( (line = reader.readLine()) != null){
+                Log.v("brad", line);
+            }
+
+
+            fin.close();
+
+        }catch (Exception e){
+            Log.v("brad", e.toString());
+        }
     }
 
 }
